@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Sol Sang</string>
+    <string name="action_settings">Settings</string>
+    <string name="Tab1">自定义与收藏</string>
+    <string name="touch_to_launch">点击打开应用</string>
+    <string name="Tab2">A岛</string>
+    <string name="Tab3">yashi</string>
+    <string name="app_version">V0.2</string>
+    <string name="author">「作 者」</string>
+    <string name="sina">新浪微博：@Nich</string>
+    <string name="github">GitHub：https://www.github.com/nichbar</string>
+    <string name="blog">博客：http://inich.info</string>
+    <string name="hintOfAddingToDictionary">输入这个Emoji快捷短语</string>
+    <string name="yes">确定</string>
+    <string name="addToDic">添加到输入法词典</string>
+    <string name="action_about">关于</string>
+    <string name="icon">icon</string>
+    <string name="thanksTo">特别感谢 @优菜米 \none：https://github.com/hiyangyue/One</string>
+    <string name="utils">com.android.support:appcompat-v7:23.0.1\ncom.android.support:design:23.0.1\ncom.android.support:cardview-v7:23.0.1\ncom.android.support:recyclerview-v7:23.0.1</string>
+    <string name="addNewEmoji">添加新Emoji</string>
+    <string name="added">" 已添加"</string>
+    <string name="cancel">取消</string>
+</resources>
