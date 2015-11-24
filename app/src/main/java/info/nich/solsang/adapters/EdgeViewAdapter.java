@@ -71,7 +71,7 @@ public class EdgeViewAdapter extends RecyclerView.Adapter<EdgeViewAdapter.EdgeVi
                 public void onClick(View v) {
                     ClipData clip = ClipData.newPlainText("emoji", mDatas.get(getAdapterPosition()));
                     clipboardManager.setPrimaryClip(clip);
-                    Toast.makeText(v.getContext(), mDatas.get(getAdapterPosition()) + " 已复制到剪贴板", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(itemView, mDatas.get(getAdapterPosition()) + "已复制到剪贴板", Snackbar.LENGTH_SHORT).show();
                 }
             });
 
@@ -124,6 +124,7 @@ public class EdgeViewAdapter extends RecyclerView.Adapter<EdgeViewAdapter.EdgeVi
                                         public void onClick(DialogInterface dialog, int which) {
                                             if (!et.getText().toString().equals("")) {
                                                 UserDictionary.Words.addWord(context, mDatas.get(getAdapterPosition()), 1, et.getText().toString(), null);
+                                                Snackbar.make(itemView,mDatas.get(getAdapterPosition())+" 已经添加到系统词典",Snackbar.LENGTH_SHORT).show();
                                             }
                                         }
                                     });

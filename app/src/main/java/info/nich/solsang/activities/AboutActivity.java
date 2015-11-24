@@ -20,38 +20,39 @@ import info.nich.solsang.R;
 public class AboutActivity extends AppCompatActivity{
     private Toolbar toolbar;
     private CollapsingToolbarLayout toolbarLayout;
+    private TextView author, github, blog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        TextView author, github, blog;
+
 
         setUpToolbar();
-//        github = (TextView) findViewById(R.id.githubURL);
-//        author = (TextView) findViewById(R.id.appAuthor);
-//        blog = (TextView) findViewById(R.id.blog);
-//        author.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Uri uri = Uri.parse("http://weibo.com/nichbar");
-//                startActivity(new Intent(Intent.ACTION_VIEW, uri));
-//            }
-//        });
-//        github.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Uri uri = Uri.parse("https://www.github.com/nichbar");
-//                startActivity(new Intent(Intent.ACTION_VIEW, uri));
-//            }
-//        });
-//        blog.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Uri uri = Uri.parse("http://inich.info");
-//                startActivity(new Intent(Intent.ACTION_VIEW,uri));
-//            }
-//        });
+        github = (TextView) findViewById(R.id.github);
+        author = (TextView) findViewById(R.id.author);
+        blog = (TextView) findViewById(R.id.blog);
+        author.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("http://weibo.com/nichbar");
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            }
+        });
+        github.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("https://www.github.com/nichbar");
+                startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            }
+        });
+        blog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("http://inich.info");
+                startActivity(new Intent(Intent.ACTION_VIEW,uri));
+            }
+        });
     }
 
     private void setUpToolbar() {

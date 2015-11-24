@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
 
         app:cardCornerRadius="2dp"
-        app:cardBackgroundColor="@color/colorAccent"
+        app:cardBackgroundColor="@color/aboutBG"
         app:cardElevation="2dp">
 
         <LinearLayout
@@ -31,14 +31,17 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/author"
                 android:text="@string/sina" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/github"
                 android:text="@string/github" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:id="@+id/blog"
                 android:text="@string/blog" />
 
         </LinearLayout>
@@ -63,7 +66,7 @@
         android:layout_height="wrap_content"
 
         app:cardCornerRadius="2dp"
-        app:cardBackgroundColor="@color/colorAccent"
+        app:cardBackgroundColor="@color/aboutBG"
         app:cardElevation="2dp">
 
         <LinearLayout
@@ -98,7 +101,7 @@
         android:layout_height="wrap_content"
 
         app:cardCornerRadius="2dp"
-        app:cardBackgroundColor="@color/colorAccent"
+        app:cardBackgroundColor="@color/aboutBG"
         app:cardElevation="2dp">
 
         <RelativeLayout

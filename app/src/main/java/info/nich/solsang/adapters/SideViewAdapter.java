@@ -74,7 +74,7 @@ public class SideViewAdapter extends RecyclerView.Adapter<SideViewAdapter.MyView
                 public void onClick(View v) {
                     ClipData clip = ClipData.newPlainText("emoji",mDatas.get(getAdapterPosition()));
                     clipboardManager.setPrimaryClip(clip);
-                    Toast.makeText(v.getContext(), mDatas.get(getAdapterPosition())+" 已复制到剪贴板", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(itemView, mDatas.get(getAdapterPosition()) + "已复制到剪贴板", Snackbar.LENGTH_SHORT).show();
                 }
             });
 
@@ -111,7 +111,7 @@ public class SideViewAdapter extends RecyclerView.Adapter<SideViewAdapter.MyView
                                 case 0:
                                     Intent intent = new Intent();
                                     intent.setAction(Intent.ACTION_SEND);
-                                    intent.putExtra(Intent.EXTRA_TEXT, "Yo , check this emoji ! " + mDatas.get(getAdapterPosition()));
+                                    intent.putExtra(Intent.EXTRA_TEXT,mDatas.get(getAdapterPosition()));
                                     intent.setType("text/plain");
                                     context.startActivity(intent);
                                     break;
