@@ -8,22 +8,20 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.UserDictionary;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import info.nich.solsang.R;
 import info.nich.solsang.utils.DatabaseHelper;
 
@@ -52,7 +50,7 @@ public class SideViewAdapter extends RecyclerView.Adapter<SideViewAdapter.MyView
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.mTextView.setText(mDatas.get(position));
+        holder.textView.setText(mDatas.get(position));
     }
 
     @Override
@@ -61,18 +59,17 @@ public class SideViewAdapter extends RecyclerView.Adapter<SideViewAdapter.MyView
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView mTextView;
-        ImageButton imageButton;
+        @Bind(R.id.text_view) TextView textView;
+        @Bind(R.id.star) ImageButton imageButton;
 
         public MyViewHolder(final View itemView) {
             super(itemView);
-            mTextView = (TextView) itemView.findViewById(R.id.text_view);
-            imageButton = (ImageButton) itemView.findViewById(R.id.share);
+            ButterKnife.bind(this,itemView);
 
-            mTextView.setOnClickListener(new View.OnClickListener() {
+            textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ClipData clip = ClipData.newPlainText("emoji",mDatas.get(getAdapterPosition()));
+                    ClipData clip = ClipData.newPlainText("emoji", mDatas.get(getAdapterPosition()));
                     clipboardManager.setPrimaryClip(clip);
                     Snackbar.make(itemView, mDatas.get(getAdapterPosition()) + "已复制到剪贴板", Snackbar.LENGTH_SHORT).show();
                 }
@@ -81,53 +78,53 @@ public class SideViewAdapter extends RecyclerView.Adapter<SideViewAdapter.MyView
             imageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     //create a database helper
-                    DatabaseHelper helper = new DatabaseHelper(itemView.getContext(),"emoji.db",null,1);
+                    DatabaseHelper helper = new DatabaseHelper(itemView.getContext(), "emoji.db", null, 1);
 
                     //create a writable database connection
                     SQLiteDatabase sqliteDatabase = helper.getWritableDatabase();
 
                     //generate a ContentValues object as a middleware of inserting data.
                     ContentValues cv = new ContentValues();
-                    cv.put("emoji",mDatas.get(getAdapterPosition()));
+                    cv.put("emoji", mDatas.get(getAdapterPosition()));
                     sqliteDatabase.insert("starsEmoji", null, cv);
                     cv.clear();
                     Snackbar.make(itemView, mDatas.get(getAdapterPosition()) + "已收藏", Snackbar.LENGTH_SHORT).show();
                 }
             });
 
-            mTextView.setOnLongClickListener(new View.OnLongClickListener() {
+            textView.setOnLongClickListener(new View.OnLongClickListener() {
                 private AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
                 private Context context = itemView.getContext();
-                final String[] Items = {"分享","添加到输入法词典"};
+                final String[] Items = {"分享", "添加到输入法词典"};
+
                 @Override
-                public boolean onLongClick(View v) {
+                public boolean onLongClick(final View v) {
                     builder.setTitle(mDatas.get(getAdapterPosition()));
                     builder.setItems(Items, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            switch (which){
+                            switch (which) {
                                 case 0:
                                     Intent intent = new Intent();
                                     intent.setAction(Intent.ACTION_SEND);
-                                    intent.putExtra(Intent.EXTRA_TEXT,mDatas.get(getAdapterPosition()));
+                                    intent.putExtra(Intent.EXTRA_TEXT, mDatas.get(getAdapterPosition()));
                                     intent.setType("text/plain");
                                     context.startActivity(intent);
                                     break;
                                 case 1:
-                                    View item = LayoutInflater.from(context).inflate(R.layout.dialog2,null,false);
+                                    View item = LayoutInflater.from(context).inflate(R.layout.dialog2, null, false);
                                     final EditText et = (EditText) item.findViewById(R.id.dialog_addToDictionary);
+                                    final String mDataRightNow = mDatas.get(getAdapterPosition());
                                     AlertDialog.Builder builder2 = new AlertDialog.Builder(context);
                                     builder2.setTitle(R.string.addToDic);
-                                    builder2.setMessage(mDatas.get(getAdapterPosition()));
+                                    builder2.setMessage(mDataRightNow);
                                     builder2.setView(item);
                                     builder2.setPositiveButton(context.getString(R.string.yes), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if(!et.getText().toString().equals("")){
-                                                UserDictionary.Words.addWord(context,mDatas.get(getAdapterPosition()),1,et.getText().toString(),null);
-                                            }
+                                            UserDictionary.Words.addWord(context, mDataRightNow, 250, et.getText().toString(), null);
+                                            Snackbar.make(itemView, mDataRightNow + " 已经添加到系统词典", Snackbar.LENGTH_SHORT).show();
                                         }
                                     });
                                     AlertDialog dialog2 = builder2.create();

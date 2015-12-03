@@ -1,25 +1,15 @@
 package info.nich.solsang.fragments;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -27,6 +17,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import info.nich.solsang.R;
 import info.nich.solsang.adapters.MainViewAdapter;
 import info.nich.solsang.entities.Emoji;
@@ -37,20 +29,15 @@ import info.nich.solsang.utils.DatabaseHelper;
  */
 public class MainFragment extends Fragment {
 
-    private RecyclerView recyclerView;
+    @Bind(R.id.recView) RecyclerView recyclerView;
     private List<Emoji> eDatasList;
     private static MainViewAdapter adapter;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        init(view);
+        View view = inflater.inflate(R.layout.fragment_base, container, false);
+        ButterKnife.bind(this,view);
         try {
             setUpRecyclerView();
         } catch (IOException | XmlPullParserException e) {
@@ -58,11 +45,6 @@ public class MainFragment extends Fragment {
         }
         return view;
     }
-
-    private void init(View view) {
-        recyclerView = (RecyclerView) view.findViewById(R.id.recView);
-    }
-
     private void setUpRecyclerView() throws IOException, XmlPullParserException {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         fetchDataFromDatabase();
@@ -78,7 +60,6 @@ public class MainFragment extends Fragment {
 
         Cursor cursor = sqliteDatabase.query("starsEmoji", new String[]{"_id", "emoji"}, null, null, "emoji", null, "_id desc", null);
 
-//      cursor.moveToFirst();
         while (cursor.moveToNext()) {
             id = cursor.getInt(cursor.getColumnIndex("_id"));
             emoji = cursor.getString(cursor.getColumnIndex("emoji"));
@@ -90,6 +71,4 @@ public class MainFragment extends Fragment {
             recyclerView.setAdapter(adapter);
         }
     }
-
-
 }

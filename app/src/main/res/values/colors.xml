@@ -5,4 +5,5 @@
     <color name="colorAccent">#00BCD4</color>
     <color name="aboutBG">#B2DFDB</color>
     <color name="white">#fff</color>
+    <color name="window_background">#FFF5F5F5</color>
 </resources>

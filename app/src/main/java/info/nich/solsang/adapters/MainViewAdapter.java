@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TimerTask;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import info.nich.solsang.R;
 import info.nich.solsang.entities.Emoji;
 import info.nich.solsang.utils.DatabaseHelper;
@@ -66,13 +68,13 @@ public class MainViewAdapter extends RecyclerView.Adapter<MainViewAdapter.MainVi
     }
 
     public class MainViewHolder extends RecyclerView.ViewHolder {
-        private TextView textView;
+        @Bind(R.id.main_textView) TextView textView;
         private AlertDialog.Builder builder;
         final String[] items = {"分享", "删除"};
 
         public MainViewHolder(final View itemView) {
             super(itemView);
-            textView = (TextView) itemView.findViewById(R.id.main_textView);
+            ButterKnife.bind(this,itemView);
             builder = new AlertDialog.Builder(itemView.getContext());
 
             textView.setOnClickListener(new View.OnClickListener() {

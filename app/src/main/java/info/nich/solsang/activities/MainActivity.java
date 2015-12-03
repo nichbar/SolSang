@@ -24,19 +24,22 @@ import android.view.View;
 import android.widget.EditText;
 
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import info.nich.solsang.fragments.EdgeFragment;
 import info.nich.solsang.fragments.MainFragment;
 import info.nich.solsang.R;
 import info.nich.solsang.fragments.SideFragment;
 import info.nich.solsang.utils.DatabaseHelper;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
-    private ViewPager viewPager;
-    private Toolbar toolbar;
-    private TabLayout tabLayout;
+    @Bind(R.id.container) ViewPager viewPager;
+    @Bind(R.id.toolbar) Toolbar toolbar;
+    @Bind(R.id.tabs) TabLayout tabLayout;
+    @Bind(R.id.fab) FloatingActionButton fab;
+
     private MyFragmentAdapter adapter;
-    private FloatingActionButton fab;
     private long exitTime = 0;
 
     @Override
@@ -44,7 +47,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        init();
+        ButterKnife.bind(this);
         setUpToolbar();
         setUpViewPager();
         setUpTabLayout();
@@ -84,9 +87,8 @@ public class MainActivity extends AppCompatActivity{
                                     cv.put("emoji", et.getText().toString());
                                     sqliteDatabase.insert("starsEmoji", null, cv);
                                     cv.clear();
-                                }
-                                else
-                                    Snackbar.make(tabLayout,"请不要留空",Snackbar.LENGTH_SHORT);
+                                } else
+                                    Snackbar.make(tabLayout, "请不要留空", Snackbar.LENGTH_SHORT);
                             }
                         })
                         .setNegativeButton(R.string.cancel, null)
@@ -97,7 +99,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void setUpDatabase() {
-         DatabaseHelper helper = new DatabaseHelper(this,"emoji.db",null,1);
+        DatabaseHelper helper = new DatabaseHelper(this, "emoji.db", null, 1);
     }
 
     private void setUpNotification() {
@@ -105,13 +107,6 @@ public class MainActivity extends AppCompatActivity{
 //        Notification notification = NotificationHelper.buildNotification(this,Notification.PRIORITY_DEFAULT);
 //        notification.flags = Notification.FLAG_NO_CLEAR;
 //        manager.notify(0,notification);
-    }
-
-    private void init() {
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        viewPager = (ViewPager) findViewById(R.id.container);
-        tabLayout = (TabLayout) findViewById(R.id.tabs);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
     }
 
     private void setUpToolbar() {
@@ -134,7 +129,7 @@ public class MainActivity extends AppCompatActivity{
     private void setUpTabLayout() {
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
-        tabLayout.setTabTextColors(Color.WHITE,Color.WHITE);
+        tabLayout.setTabTextColors(Color.WHITE, Color.WHITE);
     }
 
     private void setUpViewPager() {
@@ -145,12 +140,11 @@ public class MainActivity extends AppCompatActivity{
     //两次back退出
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if(keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN){
-            if((System.currentTimeMillis() - exitTime) > 3000){
-                Snackbar.make(tabLayout,"再按一次退出",Snackbar.LENGTH_LONG).show();
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+            if ((System.currentTimeMillis() - exitTime) > 3000) {
+                Snackbar.make(tabLayout, "再按一次退出", Snackbar.LENGTH_LONG).show();
                 exitTime = System.currentTimeMillis();
-            }
-            else {
+            } else {
                 finish();
             }
             return true;

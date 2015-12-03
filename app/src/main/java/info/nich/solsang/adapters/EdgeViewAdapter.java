@@ -17,10 +17,11 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import info.nich.solsang.R;
 import info.nich.solsang.utils.DatabaseHelper;
 
@@ -48,7 +49,7 @@ public class EdgeViewAdapter extends RecyclerView.Adapter<EdgeViewAdapter.EdgeVi
 
     @Override
     public void onBindViewHolder(EdgeViewHolder holder, int position) {
-        holder.mTextView.setText(mDatas.get(position));
+        holder.textView.setText(mDatas.get(position));
     }
 
     @Override
@@ -57,16 +58,14 @@ public class EdgeViewAdapter extends RecyclerView.Adapter<EdgeViewAdapter.EdgeVi
     }
 
     public static class EdgeViewHolder extends RecyclerView.ViewHolder {
-        TextView mTextView;
-        ImageButton imageButton;
+        @Bind(R.id.text_view) TextView textView;
+        @Bind(R.id.star) ImageButton imageButton;
 
         public EdgeViewHolder(final View itemView) {
             super(itemView);
+            ButterKnife.bind(this,itemView);
 
-            mTextView = (TextView) itemView.findViewById(R.id.text_view);
-            imageButton = (ImageButton) itemView.findViewById(R.id.share);
-
-            mTextView.setOnClickListener(new View.OnClickListener() {
+            textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     ClipData clip = ClipData.newPlainText("emoji", mDatas.get(getAdapterPosition()));
@@ -89,17 +88,17 @@ public class EdgeViewAdapter extends RecyclerView.Adapter<EdgeViewAdapter.EdgeVi
                     cv.put("emoji", mDatas.get(getAdapterPosition()));
                     sqliteDatabase.insert("starsEmoji", null, cv);
                     cv.clear();
-                    Snackbar.make(itemView,mDatas.get(getAdapterPosition()) + "已收藏",Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(itemView, mDatas.get(getAdapterPosition()) + "已收藏", Snackbar.LENGTH_SHORT).show();
                 }
             });
 
-            mTextView.setOnLongClickListener(new View.OnLongClickListener() {
+            textView.setOnLongClickListener(new View.OnLongClickListener() {
                 private AlertDialog.Builder builder = new AlertDialog.Builder(itemView.getContext());
                 private Context context = itemView.getContext();
                 final String[] items = {"分享", "添加到输入法词典"};
 
                 @Override
-                public boolean onLongClick(View v) {
+                public boolean onLongClick(final View v) {
                     builder.setTitle(mDatas.get(getAdapterPosition()));
                     builder.setItems(items, new DialogInterface.OnClickListener() {
                         @Override
@@ -108,24 +107,23 @@ public class EdgeViewAdapter extends RecyclerView.Adapter<EdgeViewAdapter.EdgeVi
                                 case 0:
                                     Intent intent = new Intent();
                                     intent.setAction(Intent.ACTION_SEND);
-                                    intent.putExtra(Intent.EXTRA_TEXT,mDatas.get(getAdapterPosition()));
+                                    intent.putExtra(Intent.EXTRA_TEXT, mDatas.get(getAdapterPosition()));
                                     intent.setType("text/plain");
                                     context.startActivity(intent);
                                     break;
                                 case 1:
                                     View item = LayoutInflater.from(context).inflate(R.layout.dialog2, null, false);
                                     final EditText et = (EditText) item.findViewById(R.id.dialog_addToDictionary);
+                                    final String mDataRightNow = mDatas.get(getAdapterPosition());
                                     AlertDialog.Builder builder2 = new AlertDialog.Builder(context);
                                     builder2.setTitle(R.string.addToDic);
-                                    builder2.setMessage(mDatas.get(getAdapterPosition()));
+                                    builder2.setMessage(mDataRightNow);
                                     builder2.setView(item);
                                     builder2.setPositiveButton(context.getString(R.string.yes), new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
-                                            if (!et.getText().toString().equals("")) {
-                                                UserDictionary.Words.addWord(context, mDatas.get(getAdapterPosition()), 1, et.getText().toString(), null);
-                                                Snackbar.make(itemView,mDatas.get(getAdapterPosition())+" 已经添加到系统词典",Snackbar.LENGTH_SHORT).show();
-                                            }
+                                            UserDictionary.Words.addWord(context, mDataRightNow, 250, et.getText().toString(), null);
+                                            Snackbar.make(itemView, mDataRightNow + " 已经添加到系统词典", Snackbar.LENGTH_SHORT).show();
                                         }
                                     });
                                     AlertDialog dialog2 = builder2.create();
